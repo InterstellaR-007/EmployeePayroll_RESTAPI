@@ -64,15 +64,23 @@ namespace EmployeeJSON
         }
 
         [TestMethod]
-        public void GivenEmployee_usingPOST_AddEmployeeObject()
+        public void GivenEmployee_usingPOST_AddMultipleEmployeeObject()
         {
-            IRestResponse response = addEmployee();
+            IRestResponse response1 = addEmployee("add1","200");
+            IRestResponse response2 = addEmployee("add2", "300");
+            IRestResponse response3 = addEmployee("add3", "400");
 
-            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.Created);
-            Employee dataresponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+            Assert.AreEqual(response1.StatusCode, System.Net.HttpStatusCode.Created);
 
-            Assert.AreEqual("yohoo",dataresponse.name);
-            Assert.AreEqual("10000", dataresponse.salary);
+            List<Employee> dataresponse = new List<Employee>();
+
+            dataresponse.Add(JsonConvert.DeserializeObject<Employee>(response1.Content));
+            dataresponse.Add(JsonConvert.DeserializeObject<Employee>(response2.Content));
+            dataresponse.Add(JsonConvert.DeserializeObject<Employee>(response3.Content));
+
+
+            Assert.AreEqual(3,dataresponse.Count);
+            
 
 
         }
@@ -90,12 +98,12 @@ namespace EmployeeJSON
 
         }
 
-        private IRestResponse addEmployee()
+        private IRestResponse addEmployee(string name, string salary)
         {
             RestRequest request = new RestRequest("/employees", Method.POST);
             JObject jObjectBody = new JObject();
-            jObjectBody.Add("name", "yohoo");
-            jObjectBody.Add("salary","10000");
+            jObjectBody.Add("name", name);
+            jObjectBody.Add("salary",salary);
             request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
