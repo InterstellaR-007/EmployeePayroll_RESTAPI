@@ -109,6 +109,23 @@ namespace EmployeeJSON
         }
 
 
+        /// <summary>
+        /// Givens the employee using delete deletes employee.
+        /// </summary>
+        [TestMethod]
+        public void GivenEmployee_usingDELETE_DeletesEmployee()
+        {
+
+            RestRequest restRequest = new RestRequest("/employees/4", Method.DELETE);
+
+            IRestResponse response = client.Execute(restRequest);
+
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.OK);
+
+
+        }
+
+
         /// <summary>Gets all employees.</summary>
         /// <returns>
         ///   <br />
