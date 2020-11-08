@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 
@@ -85,6 +86,28 @@ namespace EmployeeJSON
 
         }
 
+        [TestMethod]
+        public void GivenEmployee_usingPUT_UpdateEMployeeSalary()
+        {
+            IRestResponse response1 = UpdateSalary(3, "updated_name", "12345");
+
+            
+
+            Assert.AreEqual(response1.StatusCode, System.Net.HttpStatusCode.OK);
+
+            List<Employee> dataresponse = new List<Employee>();
+
+            dataresponse.Add(JsonConvert.DeserializeObject<Employee>(response1.Content));
+            
+
+
+            Assert.AreEqual("updated_name",dataresponse.First().name );
+            Assert.AreEqual("12345", dataresponse.First().salary);
+
+
+
+        }
+
 
         /// <summary>Gets all employees.</summary>
         /// <returns>
@@ -104,6 +127,19 @@ namespace EmployeeJSON
             JObject jObjectBody = new JObject();
             jObjectBody.Add("name", name);
             jObjectBody.Add("salary",salary);
+            request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
+
+            IRestResponse response = client.Execute(request);
+            return response;
+
+        }
+
+        private IRestResponse UpdateSalary(int id, string name,string salary)
+        {
+            RestRequest request = new RestRequest(string.Format("/employees/"+id), Method.PUT);
+            JObject jObjectBody = new JObject();
+            jObjectBody.Add("name", name);
+            jObjectBody.Add("salary", salary);
             request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
 
             IRestResponse response = client.Execute(request);
