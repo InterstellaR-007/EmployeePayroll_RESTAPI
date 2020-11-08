@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -61,6 +62,22 @@ namespace EmployeeJSON
             Assert.AreEqual(4, dataresponse.Count);
 
         }
+
+        [TestMethod]
+        public void GivenEmployee_usingPOST_AddEmployeeObject()
+        {
+            IRestResponse response = addEmployee();
+
+            Assert.AreEqual(response.StatusCode, System.Net.HttpStatusCode.Created);
+            Employee dataresponse = JsonConvert.DeserializeObject<Employee>(response.Content);
+
+            Assert.AreEqual("yohoo",dataresponse.name);
+            Assert.AreEqual("10000", dataresponse.salary);
+
+
+        }
+
+
         /// <summary>Gets all employees.</summary>
         /// <returns>
         ///   <br />
@@ -68,6 +85,19 @@ namespace EmployeeJSON
         private IRestResponse getAllEmployees()
         {
             RestRequest request = new RestRequest("/employees", Method.GET);
+            IRestResponse response = client.Execute(request);
+            return response;
+
+        }
+
+        private IRestResponse addEmployee()
+        {
+            RestRequest request = new RestRequest("/employees", Method.POST);
+            JObject jObjectBody = new JObject();
+            jObjectBody.Add("name", "yohoo");
+            jObjectBody.Add("salary","10000");
+            request.AddParameter("application/json", jObjectBody, ParameterType.RequestBody);
+
             IRestResponse response = client.Execute(request);
             return response;
 
