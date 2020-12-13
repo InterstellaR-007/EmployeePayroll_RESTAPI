@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeJSON", "EmployeeJSON\EmployeeJSON.csproj", "{DFAAF7B6-424B-477C-BD5F-535EEE7B0650}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmployeeTestClass", "EmployeeJSON\EmployeeTestClass.csproj", "{DFAAF7B6-424B-477C-BD5F-535EEE7B0650}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmployeeRestSharpMain", "EmployeeRestSharpMain\EmployeeRestSharpMain.csproj", "{97FBADA8-CC5C-44F9-8792-FD337BE36524}"
 EndProject
